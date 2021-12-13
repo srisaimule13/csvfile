@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="3f521809-f39d-45d1-8b3f-03f59df77eaa" />
+	<flow name="csvfileFlow" doc:id="226e496a-c683-4d22-a4e5-508c5ab64408" >
+		<file:listener doc:name="On New or Updated File" doc:id="70458f3c-d201-4bf4-ab12-cf7df0dd5789" config-ref="File_Config" directory="C:\Users\ElisettyDhanyaSriSai\Documents\readcsvfile" recursive="false" moveToDirectory="C:\Users\ElisettyDhanyaSriSai\Documents\readcsvfile\output" watermarkMode="CREATED_TIMESTAMP">
+			<reconnect />
+			<scheduling-strategy >
+				<fixed-frequency frequency="5"/>
+			</scheduling-strategy>
+		</file:listener>
+		<ee:transform doc:name="Transform Message" doc:id="40f4cee6-57dc-47b5-9e1f-3891775c6404" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e1780391-696b-4df2-8048-92b5edd4fd1c" message="#[payload]" />
+	</flow>
+</mule>
